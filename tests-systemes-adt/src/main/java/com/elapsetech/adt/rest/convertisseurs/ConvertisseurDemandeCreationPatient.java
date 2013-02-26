@@ -3,7 +3,7 @@ package com.elapsetech.adt.rest.convertisseurs;
 import com.elapsetech.adt.domain.Patient;
 import com.elapsetech.adt.rest.dto.requests.DemandeCreationPatient;
 
-public class ConvertisseurDemandeCreationPatient implements Convertisseur<DemandeCreationPatient, Patient>{
+public class ConvertisseurDemandeCreationPatient implements Convertisseur<DemandeCreationPatient, Patient> {
 
     @Override
     public DemandeCreationPatient convertir(Patient entite) {
@@ -12,8 +12,8 @@ public class ConvertisseurDemandeCreationPatient implements Convertisseur<Demand
 
     @Override
     public Patient convertir(DemandeCreationPatient entite) {
-        Patient patient = new Patient(entite.NAM, entite.prenom + entite.nom);
-        patient.setDateNiassance(entite.DDN);
+        Patient patient = new Patient(entite.NAM, entite.prenom, entite.nom);
+        patient.setDateNaissance(entite.DDN);
         return patient;
     }
 
