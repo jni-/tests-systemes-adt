@@ -8,10 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "patient")
 public class PatientDto {
 
-    public int id;
     public String prenom;
     public String nom;
-    public String name;
+    public String nam;
     public Date ddn;
 
     public List<VenueDto> venues;

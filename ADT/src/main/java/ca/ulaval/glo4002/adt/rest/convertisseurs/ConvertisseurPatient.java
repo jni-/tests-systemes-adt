@@ -17,7 +17,7 @@ public class ConvertisseurPatient implements Convertisseur<PatientDto, Patient> 
     @Override
     public PatientDto convertir(Patient entite) {
         PatientDto dto = new PatientDto();
-        dto.name = entite.getNam();
+        dto.nam = entite.getNam();
         dto.ddn = entite.getDateNaissance();
         dto.nom = entite.getNom();
         dto.prenom = entite.getPrenom();
@@ -73,7 +73,7 @@ public class ConvertisseurPatient implements Convertisseur<PatientDto, Patient> 
 
     @Override
     public Patient convertir(PatientDto entite) {
-        Patient patient = new Patient(entite.name, entite.prenom, entite.nom);
+        Patient patient = new Patient(entite.nam, entite.prenom, entite.nom);
         patient.setDateNaissance(entite.ddn);
         return patient;
     }
