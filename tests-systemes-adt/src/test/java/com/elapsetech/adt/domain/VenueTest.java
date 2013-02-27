@@ -15,6 +15,7 @@ public class VenueTest {
 
     private static final Date DATE = Calendar.getInstance().getTime();
     private static final String RAISON_DE_LA_VENUE = "raison";
+    private static final Date DATE_DE_TRANSFERS = Calendar.getInstance().getTime();
 
     @Mock
     private Departement departement;
@@ -23,7 +24,12 @@ public class VenueTest {
 
     @Before
     public void setUp() {
-        venue = new Venue(DATE, departement);
+        venue = new Venue(DATE, departement) {
+            @Override
+            Date obtenirDateCourante() {
+                return DATE_DE_TRANSFERS;
+            }
+        };
     }
 
     @Test
@@ -41,5 +47,15 @@ public class VenueTest {
         venue.setRaisonDeVenue(RAISON_DE_LA_VENUE);
 
         assertEquals(RAISON_DE_LA_VENUE, venue.getRaisonDeVenue());
+    }
+
+    @Test
+    public void peutAjouterUnTransfers() {
+        venue.transfererMaintenantVers(departement);
+
+        Transfers transfers = venue.getTransfers().get(0);
+
+        assertEquals(DATE_DE_TRANSFERS, transfers.getDate());
+        assertSame(departement, transfers.getDepartement());
     }
 }

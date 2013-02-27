@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.elapsetech.adt.domain.Departement;
 import com.elapsetech.adt.domain.Patient;
+import com.elapsetech.adt.domain.Transfers;
 import com.elapsetech.adt.domain.Venue;
 import com.elapsetech.adt.rest.dto.responses.DepartementDto;
 import com.elapsetech.adt.rest.dto.responses.PatientDto;
+import com.elapsetech.adt.rest.dto.responses.TransfersDto;
 import com.elapsetech.adt.rest.dto.responses.VenueDto;
 
 public class ConvertisseurPatient implements Convertisseur<PatientDto, Patient> {
@@ -37,6 +39,11 @@ public class ConvertisseurPatient implements Convertisseur<PatientDto, Patient> 
         VenueDto dto = new VenueDto();
         dto.date = venue.getDate();
         dto.departement = creerDepartementDto(venue.getDepartement());
+
+        if (venue.getTransfers() != null && !venue.getTransfers().isEmpty()) {
+            dto.transfers = creerListeTransfersDto(venue.getTransfers());
+        }
+
         return dto;
     }
 
@@ -45,6 +52,23 @@ public class ConvertisseurPatient implements Convertisseur<PatientDto, Patient> 
         dto.code = departement.getCode();
         dto.nom = departement.getNom();
         return dto;
+    }
+
+    private List<TransfersDto> creerListeTransfersDto(List<Transfers> listeTransfers) {
+        List<TransfersDto> listeTransfersDto = new LinkedList<>();
+
+        for (Transfers transfers : listeTransfers) {
+            listeTransfersDto.add(creerTransfersDto(transfers));
+        }
+
+        return listeTransfersDto;
+    }
+
+    private TransfersDto creerTransfersDto(Transfers transfers) {
+        TransfersDto transfersDto = new TransfersDto();
+        transfersDto.date = transfers.getDate();
+        transfersDto.departement = creerDepartementDto(transfers.getDepartement());
+        return transfersDto;
     }
 
     @Override

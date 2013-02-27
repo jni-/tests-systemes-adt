@@ -13,6 +13,7 @@ import com.elapsetech.adt.domain.Patient;
 import com.elapsetech.adt.domain.Venue;
 import com.elapsetech.adt.rest.dto.responses.DepartementDto;
 import com.elapsetech.adt.rest.dto.responses.PatientDto;
+import com.elapsetech.adt.rest.dto.responses.TransfersDto;
 import com.elapsetech.adt.rest.dto.responses.VenueDto;
 
 public class ConvertisseurPatientTest {
@@ -22,9 +23,13 @@ public class ConvertisseurPatientTest {
     private static final String PRENOM = "un prenom";
     private static final String NOM = "un nom";
     private static final String CODE_DEPARTEMENT = "un code";
+    private static final String CODE_DEPARTEMENT_TRANSFERE = "un code transfers";
     private static final String NOM_DEPARTEMENT = "un nom departement";
     private static final Date DDN = Calendar.getInstance().getTime();
     private static final Date DATE_VENUE = Calendar.getInstance().getTime();
+
+    private static final int NOMBRE_VENUES = 1;
+    private static final int NOMBRE_TRANSFERS = 1;
 
     private Patient patient;
     private PatientDto patientDto;
@@ -51,7 +56,7 @@ public class ConvertisseurPatientTest {
     public void peutConvertirDePatientAuDtoEtLeDtoContientLaVenue() {
         PatientDto dtoCree = convertisseur.convertir(patient);
 
-        assertEquals(1, dtoCree.venues.size());
+        assertEquals(NOMBRE_VENUES, dtoCree.venues.size());
     }
 
     @Test
@@ -73,6 +78,23 @@ public class ConvertisseurPatientTest {
     }
 
     @Test
+    public void peutConvertirDePatientAuDtoEtleDtoContientLesTransfersDeLaVenue() {
+        PatientDto dtoCree = convertisseur.convertir(patient);
+        VenueDto venueDto = dtoCree.venues.get(0);
+
+        assertEquals(NOMBRE_TRANSFERS, venueDto.transfers.size());
+    }
+
+    @Test
+    public void peutConvertirDePatientAuDtoEtleDtoContientLesTransfersBienRemplis() {
+        PatientDto dtoCree = convertisseur.convertir(patient);
+        VenueDto venueDto = dtoCree.venues.get(0);
+        TransfersDto transfersDto = venueDto.transfers.get(0);
+
+        assertEquals(CODE_DEPARTEMENT_TRANSFERE, transfersDto.departement.code);
+    }
+
+    @Test
     public void peutConvertirDePatientDtoAuPatient() {
         Patient patientCree = convertisseur.convertir(patientDto);
 
@@ -86,7 +108,10 @@ public class ConvertisseurPatientTest {
         Departement departement = new Departement(CODE_DEPARTEMENT);
         departement.setNom(NOM_DEPARTEMENT);
 
+        Departement departementTransfere = new Departement(CODE_DEPARTEMENT_TRANSFERE);
+
         Venue venue = new Venue(DATE_VENUE, departement);
+        venue.transfererMaintenantVers(departementTransfere);
 
         patient = new Patient(NAM, PRENOM, NOM);
         patient.setDateNaissance(DDN);
