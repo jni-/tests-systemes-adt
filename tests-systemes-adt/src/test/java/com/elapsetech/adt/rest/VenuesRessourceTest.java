@@ -71,7 +71,7 @@ public class VenuesRessourceTest {
         Response reponse = ressource.ajouterVenue(demandeInvalide, ID_PATIENT);
         Erreur erreur = (Erreur) reponse.getEntity();
 
-        assertEquals(Status.BAD_REQUEST.getStatusCode(), reponse.getStatus());
+        assertEquals(Status.NOT_FOUND.getStatusCode(), reponse.getStatus());
         assertEquals(erreur.raison, message);
     }
 

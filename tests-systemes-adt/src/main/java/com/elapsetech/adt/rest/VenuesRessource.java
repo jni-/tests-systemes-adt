@@ -42,7 +42,7 @@ public class VenuesRessource {
 
             return Response.ok(new CreationEntite(numeroVenue)).build();
         } catch (ConversionImpossibleException e) {
-            return Response.status(Status.BAD_REQUEST).entity(new Erreur(e.getMessage())).build();
+            return Response.status(Status.NOT_FOUND).entity(new Erreur(e.getMessage())).build();
         }
     }
 
