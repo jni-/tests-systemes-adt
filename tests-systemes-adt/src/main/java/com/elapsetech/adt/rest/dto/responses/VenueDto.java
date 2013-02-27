@@ -6,6 +6,8 @@ public class VenueDto {
 
     public Date date;
 
+    public String raison;
+
     public DepartementDto departement;
 
 }

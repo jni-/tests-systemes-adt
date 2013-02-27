@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class VenueTest {
 
     private static final Date DATE = Calendar.getInstance().getTime();
+    private static final String RAISON_DE_LA_VENUE = "raison";
 
     @Mock
     private Departement departement;
@@ -33,5 +34,12 @@ public class VenueTest {
     @Test
     public void departementIdPasseAuConstructeurEstConserve() {
         assertSame(departement, venue.getDepartement());
+    }
+
+    @Test
+    public void peutDonnerUneRaisonDeVenue() {
+        venue.setRaisonDeVenue(RAISON_DE_LA_VENUE);
+
+        assertEquals(RAISON_DE_LA_VENUE, venue.getRaisonDeVenue());
     }
 }

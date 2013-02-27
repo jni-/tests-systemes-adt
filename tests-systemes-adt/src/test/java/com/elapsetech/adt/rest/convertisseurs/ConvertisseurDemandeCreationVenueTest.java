@@ -1,6 +1,7 @@
 package com.elapsetech.adt.rest.convertisseurs;
 
 import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class ConvertisseurDemandeCreationVenueTest {
     private static final int ID_DEPARTEMENT = 10;
     private static final int ID_DEPARTEMENT_INEXISTANT = -1;
     private static final String CODE_DEPARTEMENT = "code";
+    private static final String RAISON_VENUE = "raison";
 
     @Mock
     private Referentiel<Departement> referentielDepartement;
@@ -49,6 +51,16 @@ public class ConvertisseurDemandeCreationVenueTest {
         willReturn(Arrays.asList(entree)).given(referentielDepartement).filtrer(mockFiltre);
 
         creerConvertisseurAvecFiltre();
+    }
+
+    @Test
+    public void peutMapperLaDate() {
+        assertEquals(DATE_VENUE, convertisseur.convertir(demande).getDate());
+    }
+
+    @Test
+    public void peutMapperLaRaison() {
+        assertEquals(RAISON_VENUE, convertisseur.convertir(demande).getRaisonDeVenue());
     }
 
     @Test
@@ -114,6 +126,7 @@ public class ConvertisseurDemandeCreationVenueTest {
         demande = new DemandeCreationVenue();
         demande.date = DATE_VENUE;
         demande.departementId = ID_DEPARTEMENT_INEXISTANT;
+        demande.raison = RAISON_VENUE;
     }
 
     private void creerConvertisseurAvecFiltre() {

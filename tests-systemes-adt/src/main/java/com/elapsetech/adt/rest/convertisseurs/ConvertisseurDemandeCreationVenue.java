@@ -26,6 +26,7 @@ public class ConvertisseurDemandeCreationVenue implements Convertisseur<DemandeC
     public Venue convertir(DemandeCreationVenue demande) {
         Departement departement = resoudreDepartement(demande);
         Venue venue = new Venue(demande.date, departement);
+        venue.setRaisonDeVenue(demande.raison);
         return venue;
     }
 
