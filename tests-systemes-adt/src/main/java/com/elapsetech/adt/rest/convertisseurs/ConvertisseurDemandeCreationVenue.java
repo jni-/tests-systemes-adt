@@ -1,20 +1,17 @@
 package com.elapsetech.adt.rest.convertisseurs;
 
-import java.util.List;
 import com.elapsetech.adt.domain.Departement;
-import com.elapsetech.adt.domain.Referentiel;
 import com.elapsetech.adt.domain.Venue;
-import com.elapsetech.adt.referentiels.EntreeReferentiel;
 import com.elapsetech.adt.rest.dto.requests.DemandeCreationVenue;
-import com.elapsetech.adt.services.Filtre;
-import com.elapsetech.adt.services.LocalisateurReferentiel;
+import com.elapsetech.adt.services.DepartementIntrouvableException;
+import com.elapsetech.adt.services.RechercheDepartement;
 
 public class ConvertisseurDemandeCreationVenue implements Convertisseur<DemandeCreationVenue, Venue> {
 
-    private Referentiel<Departement> referentielDepartement;
+    private RechercheDepartement rechercheDepartement;
 
     public ConvertisseurDemandeCreationVenue() {
-        referentielDepartement = LocalisateurReferentiel.obtenir(Departement.class);
+        rechercheDepartement = new RechercheDepartement();
     }
 
     @Override
@@ -24,53 +21,18 @@ public class ConvertisseurDemandeCreationVenue implements Convertisseur<DemandeC
 
     @Override
     public Venue convertir(DemandeCreationVenue demande) {
-        Departement departement = resoudreDepartement(demande);
+        Departement departement;
+        try {
+            departement = rechercheDepartement.rechercher(demande.departementId, demande.departementCode);
+        } catch (DepartementIntrouvableException e) {
+            throw new ConversionImpossibleException(e.getMessage());
+        }
         Venue venue = new Venue(demande.date, departement);
         venue.setRaisonDeVenue(demande.raison);
         return venue;
     }
 
-    private Departement resoudreDepartement(DemandeCreationVenue demande) {
-        Departement departement;
-        if (demande.departementId >= 0) {
-            departement = referentielDepartement.obtenir(demande.departementId);
-        } else {
-            departement = obtenirDepartementAvecCode(demande.departementCode);
-        }
-
-        if (departement == null) {
-            throw new ConversionImpossibleException(String.format("Le departement avec id=%d OU code=%s n'existe pas",
-                    demande.departementId, demande.departementCode));
-        }
-
-        return departement;
+    ConvertisseurDemandeCreationVenue(RechercheDepartement recherche) {
+        rechercheDepartement = recherche;
     }
-
-    private Departement obtenirDepartementAvecCode(String code) {
-        List<EntreeReferentiel<Integer, Departement>> entrees = referentielDepartement.filtrer(creerFiltrePourCode(code));
-
-        if (entrees.isEmpty()) {
-            return null;
-        }
-
-        if (entrees.size() > 1) {
-            throw new ConversionImpossibleException("Il existe plusieurs départements avec le code " + code);
-        }
-
-        return entrees.get(0).getEntite();
-    }
-
-    Filtre<Departement> creerFiltrePourCode(final String code) {
-        return new Filtre<Departement>() {
-            @Override
-            public boolean doitGarder(Departement entite) {
-                return entite.possedeCode(code);
-            }
-        };
-    }
-
-    ConvertisseurDemandeCreationVenue(Referentiel<Departement> referentiel) {
-        referentielDepartement = referentiel;
-    }
-
 }
