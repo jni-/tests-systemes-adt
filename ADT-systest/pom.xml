@@ -24,9 +24,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>cca.ulaval.glo4002</groupId>
+    	<groupId>ca.ulaval.glo4002</groupId>
     	<artifactId>ADT</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+    	<version>0.0.1</version>
     </dependency>
   </dependencies>
   	<build>
