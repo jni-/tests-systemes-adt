@@ -21,4 +21,8 @@ public class Departement implements Entite {
         return this.code.equals(code);
     }
 
+    public String getCode() {
+        return code;
+    }
+
 }
