@@ -32,7 +32,7 @@ public class ServerAdt {
         ServletHolder jerseyServletHolder = new ServletHolder(ServletContainer.class);
         jerseyServletHolder.setInitParameter("com.sun.jersey.config.property.resourceConfigClass",
                 "com.sun.jersey.api.core.PackagesResourceConfig");
-        jerseyServletHolder.setInitParameter("com.sun.jersey.config.property.packages", "com.elapsetech.adt.rest");
+        jerseyServletHolder.setInitParameter("com.sun.jersey.config.property.packages", "ca.ulaval.glo4002.adt.rest");
         servletContextHandler.addServlet(jerseyServletHolder, "/*");
     }
 
